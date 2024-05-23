@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form action="/addtask" method="POST">
+        <input type="text" name="newtask" placeholder="New task" required>
+        <button type="submit">Add Task</button>
+    </form>
+    <h2>Tasks</h2>
+    <ul id="task-list"></ul>
+
+    <form id="remove-task-form" action="/removetask" method="POST">
+        <input type="hidden" name="check" id="completed-task">
+        <button type="submit" style="display: none;">Complete</button>
+    </form>
+
+    <script>
+        // Fetch tasks from the server and display them
+        async function fetchTasks() {
+            const response = await fetch('/tasks');
+            const tasks = await response.json();
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.textContent = task;
+                li.addEventListener('click', () => completeTask(task));
+                taskList.appendChild(li);
+            });
+        }
+
+        // Mark a task as complete
+        function completeTask(task) {
+            document.getElementById('completed-task').value = task;
+            document.getElementById('remove-task-form').submit();
+        }
+
+        // Initial fetch of tasks when the page loads
+        window.onload = fetchTasks;
+    </script>
+</body>
+</html>
