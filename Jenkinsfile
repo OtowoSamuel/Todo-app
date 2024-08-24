@@ -45,9 +45,9 @@ pipeline {
         stage('Deploy to ECS') {
             steps {
                 script {
-                    // Force a new deployment in ECS to use the updated image.
+                    // Force a new deployment in ECS to use the updated image, specifying the region.
                     sh """
-                    aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --force-new-deployment
+                    aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --region ${AWS_REGION} --force-new-deployment
                     """
                 }
             }
