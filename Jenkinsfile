@@ -6,7 +6,7 @@ pipeline {
         ECR_REPO_NAME = '488323332783.dkr.ecr.eu-north-1.amazonaws.com/todo-app'
         AWS_REGION = 'eu-north-1'
         CLUSTER_NAME = 'TodoappCluster'
-        SERVICE_NAME = 'todoapp_service'
+        SERVICE_NAME = 'todoapp_service1' // Updated service name
         IMAGE_TAG = "${env.BUILD_ID}"
         AWS_ACCOUNT_ID = '488323332783'
     }
@@ -45,7 +45,7 @@ pipeline {
         stage('Deploy to ECS') {
             steps {
                 script {
-                    // Force a new deployment in ECS to use the updated image, specifying the region.
+                    // Force a new deployment in ECS to use the updated image.
                     sh """
                     aws ecs update-service --cluster ${CLUSTER_NAME} --service ${SERVICE_NAME} --region ${AWS_REGION} --force-new-deployment
                     """
